@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc FindByPhone (FindByPhoneRequest) returns (FindByPhoneResponse);
+  rpc FindByEmail (FindByEmailRequest) returns (FindByEmailResponse);
+  rpc UpdatePassword (UpdatePasswordRequest) returns (UpdatePasswordResponse);
+  rpc GetByRole (GetByRoleRequest) returns (GetByRoleResponse);
+
+
+  rpc HealthCheck (Empty) returns (HealthCheckResponse);
+}
+
+message FindByPhoneRequest {
+  string phoneNumber = 1;
+}
+
+message FindByPhoneResponse {
+  User user = 1;
+}
+
+message FindByEmailRequest {
+  string email = 1;
+}
+
+message FindByEmailResponse {
+  User user = 1;
+}
+
+message UpdatePasswordRequest {
+  string userId = 1;
+  string newPasswordHash = 2;
+}
+
+message UpdatePasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetByRoleRequest {
+  string role = 1;
+}
+
+message GetByRoleResponse {
+  User user = 1;
+}
+
+message User {
+  string _id = 1;
+  string phoneNumber = 2;
+  string email = 3;
+  string password = 4;
+  string role = 5;
+  bool isActive = 6;
+  bool isBlocked = 7;
+  bool isTwoFactorEnabled = 8;
+  string twoFactorSecret = 9;
+}
+
+message HealthCheckResponse {
+  string status = 1;
+}
+message Empty {}
+

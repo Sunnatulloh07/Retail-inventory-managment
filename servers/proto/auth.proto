@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  // Login by phone (OTPni yuborish, ixtiyoriy)
+  rpc LoginByPhone (LoginByPhoneRequest) returns (LoginByPhoneResponse);
+
+  // Verify OTP
+  rpc VerifyOtp (VerifyOtpRequest) returns (LoginResponse);
+
+  // Login by email + password
+  rpc LoginByPassword (LoginByPasswordRequest) returns (LoginResponse);
+
+  // Validate token
+  rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
+
+  // Reset password (super admin yoki foydalanuvchining o'zi)
+  rpc ResetPassword (ResetPasswordRequest) returns (ResetPasswordResponse);
+
+  // Health check
+  rpc HealthCheck (Empty) returns (HealthCheckResponse);
+}
+
+// Message-lar
+message LoginByPhoneRequest {
+  string phoneNumber = 1;
+}
+message LoginByPhoneResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message VerifyOtpRequest {
+  string phoneNumber = 1;
+  string otpCode = 2;
+}
+message LoginByPasswordRequest {
+  string email = 1;
+  string password = 2;
+}
+message LoginResponse {
+  bool success = 1;
+  string message = 2;
+  string accessToken = 3;
+  string refreshToken = 4;
+}
+
+message ValidateTokenRequest {
+  string accessToken = 1;
+}
+message ValidateTokenResponse {
+  bool isValid = 1;
+  string userId = 2;
+  string role = 3;
+}
+
+message ResetPasswordRequest {
+  string userId = 1;      
+  string oldPassword = 2; 
+  string newPassword = 3;
+}
+message ResetPasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message HealthCheckResponse {
+  string status = 1;
+}
+
+message Empty {}
+
